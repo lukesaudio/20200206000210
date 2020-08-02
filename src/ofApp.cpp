@@ -3,24 +3,23 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
-	iterations = 10;
-	length = 10;
-	currentPoint.set(0, ofRandom(ofGetHeight()));
-	ofSetFrameRate(framerate);
-	ofBackground(ofColor::black);
-	ofSetColor(ofColor::white);
+	iterations = 40; //how many times the loops should run each
+	length = 100; //starting line length
+
+	currentPoint.set(0, ofRandom(ofGetHeight())); //picks a random location height-wise to set the first point
+
+	ofSetFrameRate(framerate); //this variable can be changed later on with = and -
+	ofBackground(ofColor::black); //default background colour
+	ofSetColor(ofColor::white); //default drawing colour
 
 	ofSetBackgroundAuto(false);
-	ofEnableAlphaBlending();
+	ofEnableAlphaBlending(); //allows for opacity colours 
 
-	//ofSetFullscreen(true);
+	//ofSetFullscreen(true); //enable for fullscreen
 
-	ofSetVerticalSync(true);
-	camera.setDistance(800);	
-
-	
-
-	circleStart.set(0, 0);
+	ofSetVerticalSync(true); //allows all frames to be drawn periodically without screen tearing but at a slower rate
+	camera.setDistance(800);	//sets the cameras distance from the canvas
+	circleStart.set(0, 0); //sets the origin point for circle drawing
 
 
 	
@@ -39,7 +38,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	camera.begin();
+	camera.begin(); //Starts the camera frame
 	
 	if (decider == true)
 	{
@@ -49,33 +48,37 @@ void ofApp::draw()
 			for (int i = 0; i < iterations; i++)
 			{
 
-				ofPushMatrix();
+				//freezes the current canvas so we can manipulate everything without losing the original state
+				ofPushMatrix(); 
 
-				int rotation = ofRandom(-180, 180);
+				//chooses a random rotation to rotate the canvas by
+				int rotation = ofRandom(-180, 180); 
 				ofRotate(rotation);
+
+				//sets colour to white with a random alpha level
 				ofSetColor(0, 0, 0, ofRandom(0, 100));
 
-				ofDrawLine(currentPoint.x, currentPoint.y, currentPoint.x + length, currentPoint.y);
-				nextPoint.set(currentPoint.x, currentPoint.y + length);
+				ofDrawLine(currentPoint.x, currentPoint.y, currentPoint.x + length, currentPoint.y); //draws a line from the current point to a point (current.x + length) away
+				nextPoint.set(currentPoint.x, currentPoint.y + length); 
 
-				ofPopMatrix();
+				ofPopMatrix(); //applies changes to canvas before moving back to orignal state
 
-				currentPoint.set(nextPoint);
+				currentPoint.set(nextPoint); //move the current point to the location of the next point
 
 
 
 			}
 
 
-			currentPoint.set(0, ofRandom(ofGetHeight()));
-			length = ofRandom(0, 100);
+			currentPoint.set(0, ofRandom(ofGetHeight())); //moves the current point x back to 0 and picks a random distance away based on the height
+			length = ofRandom(0, 100); //chooses a random length for the next line
 
 		}
 
+		//the code then repeats here
+
 		for (int i = 0; i < iterations; i++)
 		{
-
-
 			for (int i = 0; i < iterations; i++)
 			{
 
@@ -86,7 +89,6 @@ void ofApp::draw()
 				ofSetColor(0, 0, 0, ofRandom(0, 100));
 
 				ofDrawLine(currentPoint.x, currentPoint.y, currentPoint.x + length, currentPoint.y);
-				//ofDrawRectangle(circleStart.x + 40, circleStart.y + ofRandom(1, 30), 15, 15);
 				nextPoint.set(currentPoint.x, currentPoint.y + length);
 
 				ofPopMatrix();
@@ -155,29 +157,36 @@ void ofApp::draw()
 
 	}
 
-	camera.end();
+	camera.end(); //Ends the camera frame
 		
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key) {
+void ofApp::keyPressed(int key) 
+{
+
 	if (key == '=')
 	{
+		//Increases the framerate of the window's playback
 		ofSetFrameRate(framerate++);
 	}
 
 	if (key == '-')
 	{
+		//Decreases the framerate of the window's playback
+
 		ofSetFrameRate(framerate--);
 		if (framerate < 0)
 		{
-			framerate = 0;
+			framerate = 0; //if the framerate drops below zero, set it to 0
 		}
 	}
 
 	if (key == ' ')
 	{
+		//Clears the screen and selects a random colour
+
 		ofClear(ofRandom(0, 255), ofRandom(0, 255), ofRandom(0, 255));
 		randCol.set(ofRandom(0, 255), ofRandom(0, 255), ofRandom(0, 255), ofRandom(0, 255));
 
@@ -195,11 +204,16 @@ void ofApp::keyPressed(int key) {
 
 	if(key == 'r')
 	{
+		//Increases the size of the circles drawn
+
 		circleSize += 10;
 	}
 
 	if (key == 't')
 	{
+
+		//Decreases the size of the circles drawn
+
 		circleSize -= 10;
 	}
 
